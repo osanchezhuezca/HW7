@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Oscar Sanchez Huezca Section 001
  *
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
@@ -37,13 +37,18 @@ public class ProblemSolutions {
         int n = values.length;
 
         for (int i = 0; i < n - 1; i++) {
-
-            // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
-            // "SELECTION SORT" ALGORITHM.
-            // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
-
+            int targetIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (ascending && values[j] < values[targetIndex]) {
+                    targetIndex = j;
+                } else if (!ascending && values[j] > values[targetIndex]) {
+                    targetIndex = j;
+                } 
+            }
+            int temp = values[targetIndex];
+            values[targetIndex] = values[i];
+            values[i] = temp;
         }
-
     } // End class selectionSort
 
 
@@ -89,9 +94,31 @@ public class ProblemSolutions {
     /*
      * The merging portion of the merge sort, divisible by k first
      */
-
-    private void mergeDivisbleByKFirst(int arr[], int k, int left, int mid, int right)
-    {
+    private void mergeDivisbleByKFirst(int arr[], int k, int left, int mid, int right) {
+        int[] temp = new int[right - left + 1];
+        int i = left;      
+        int j = mid + 1;    
+        int m = 0;          
+        while (i <= mid && arr[i] % k == 0) {
+            temp[m++] = arr[i++];
+        }
+        while (j <= right && arr[j] % k == 0) {
+            temp[m++] = arr[j++];
+        }
+        while (i <= mid && j <= right) {
+            if (arr[i] <= arr[j]) {
+                temp[m++] = arr[i++];
+            } else {
+                temp[m++] = arr[j++];
+            }
+        }
+        while (i <= mid) {
+            temp[m++] = arr[i++];
+        }
+        while (j <= right) {
+            temp[m++] = arr[j++];
+        }
+        System.arraycopy(temp, 0, arr, left, temp.length);
         // YOUR CODE GOES HERE, THIS METHOD IS NO MORE THAN THE STANDARD MERGE PORTION
         // OF A MERGESORT, EXCEPT THE NUMBERS DIVISIBLE BY K MUST GO FIRST WITHIN THE
         // SEQUENCE PER THE DISCUSSION IN THE PROLOGUE ABOVE.
@@ -101,9 +128,6 @@ public class ProblemSolutions {
         // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
-
-        return;
-
     }
 
 
@@ -153,13 +177,18 @@ public class ProblemSolutions {
      */
 
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
-
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
-
-        return false;
-
+        Arrays.sort(asteroids);
+        long currentMass = mass; 
+        boolean bool = true;
+        for (int a : asteroids) {
+            if (currentMass >= a) {
+                currentMass += a;
+            } else {
+                bool= false;
+            }
+        }
+        return bool;
     }
-
 
     /**
      * Method numRescueSleds
@@ -191,11 +220,17 @@ public class ProblemSolutions {
      */
 
     public static int numRescueSleds(int[] people, int limit) {
-
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
-
-        return -1;
-
+        Arrays.sort(people);
+        int i = 0, j = people.length - 1;
+        int sleds = 0;
+        while (i <= j) {
+            if (people[i] + people[j] <= limit) {
+                i++;
+            }
+            j--;
+            sleds++;
+        }
+        return sleds;
     }
 
 } // End Class ProblemSolutions
